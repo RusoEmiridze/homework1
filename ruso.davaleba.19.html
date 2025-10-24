@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Validation Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-top: 20px; }
+        .error { color: red; font-size: 12px; }
+        .slider-container { margin-top: 20px; }
+        .splide__slide { text-align: center; background: #eee; padding: 50px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Form Validation</h1>
+
+<form id="formContainer">
+    <label>სახელი:</label><br>
+    <input type="text" id="name"><br>
+    <div id="nameError" class="error"></div>
+
+    <label>ელფოსტა:</label><br>
+    <input type="text" id="email"><br>
+    <div id="emailError" class="error"></div>
+
+    <label>ტელეფონის ნომერი:</label><br>
+    <input type="text" id="phone"><br>
+    <div id="phoneError" class="error"></div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<div class="slider-container">
+    <div id="image-slider" class="splide">
+        <div class="splide__track">
+            <ul class="splide__list">
+                <li class="splide__slide">სლაიდი 1</li>
+                <li class="splide__slide">სლაიდი 2</li>
+                <li class="splide__slide">სლაიდი 3</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/validator@13.9.0/validator.min.js"></script>
+<script>
+    // slider
+    var splide = new Splide('#image-slider', {
+        type: 'loop',
+        perPage: 1,
+        autoplay: true,
+    });
+    splide.mount();
+
+    var form = document.getElementById('formContainer');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+
+        var valid = true;
+
+        if(name.length < 3) {
+            document.getElementById('nameError').innerText = "სახელი მოკლეა!!!";
+            valid = false;
+        } else {
+            document.getElementById('nameError').innerText = "";
+        }
+
+        if(!validator.isEmail(email)) {
+            document.getElementById('emailError').innerText = "ელფოსტა არასწორია";
+            valid = false;
+        } else {
+            document.getElementById('emailError').innerText = "";
+        }
+
+        var phoneRegex = /^[0-9]{10}$/;
+        if(!phoneRegex.test(phone)) {
+            document.getElementById('phoneError').innerText = "ტელეფონის ნომერი მინიმუმ 10 ციფრისგან უნდა შედგებოდეს";
+            valid = false;
+        } else {
+            document.getElementById('phoneError').innerText = "";
+        }
+
+        if(valid) {
+            alert("ფორმა დადასტურებულია!!!");
+        }
+    });
+</script>
+
+</body>
+</html>
